@@ -113,7 +113,7 @@ main_process() {
             elif [ $PREVIOUS_FIRST_MINUTE -lt $FIRST_MINUTE ]
             then   
                 
-                echo "$PREVIOUS_DATE_TIME.$PREVIOUS_HOUR.$PREVIOUS_FIRST_MINUTE: $NUMBER_COUNT">>unique_output.txt
+                echo "$PREVIOUS_DATE_TIME$PREVIOUS_HOUR$PREVIOUS_FIRST_MINUTE: $NUMBER_COUNT">>unique_output.txt
 
                 PREVIOUS_FIRST_MINUTE=$FIRST_MINUTE
 
@@ -154,7 +154,7 @@ main_process() {
         elif [ $INPUT_TIME_CHECK -ge $FINAL_VALUE ]
         then
 
-            echo "$PREVIOUS_DATE_TIME.$PREVIOUS_HOUR.$PREVIOUS_FIRST_MINUTE: $NUMBER_COUNT">>unique_output.txt 
+            echo "$PREVIOUS_DATE_TIME$PREVIOUS_HOUR$PREVIOUS_FIRST_MINUTE: $NUMBER_COUNT">>unique_output.txt 
    
             echo "--------NEXT TEN MINUTES OUTPUT--------">>unique_output.txt
 
@@ -179,7 +179,7 @@ main_process() {
         
     done
 
-    echo "$PREVIOUS_DATE_TIME.$PREVIOUS_HOUR.$PREVIOUS_FIRST_MINUTE: $NUMBER_COUNT">>unique_output.txt)
+    echo "$PREVIOUS_DATE_TIME$PREVIOUS_HOUR$PREVIOUS_FIRST_MINUTE: $NUMBER_COUNT">>unique_output.txt)
     cat unique_output.txt
 }
 
@@ -273,7 +273,7 @@ main_process2() {
         
     done
 
-    echo "$PREVIOUS_DATE_TIME.$PREVIOUS_HOUR.$PREVIOUS_FIRST_MINUTE: $NUMBER_COUNT">>standard_output.txt)
+    echo "$PREVIOUS_DATE_TIME$PREVIOUS_HOUR$PREVIOUS_FIRST_MINUTE: $NUMBER_COUNT">>standard_output.txt)
 
     cat standard_output.txt
 
