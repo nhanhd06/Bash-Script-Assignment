@@ -86,8 +86,20 @@ main_process() {
             FINAL_VALUE=$(date -d ""${PREVIOUS_DATE_TIME}" "${HOUR}":"${MINUTE}":"${SECOND}" 10min" +'%Y%m%d%H%M%S' | cut -b 9-12)
 
             NUMBER_COUNT=$(echo ${line} | awk '{split($0,a,":"); print a[2]}' | sed 's/[[]//' | sed 's/[]]//' | sed 's/,/ /g' | sed 's/-/ /g' | awk 'BEGIN{RS=" "}{$1=$1}1' | grep -cve '^\s*$')
-            
+
             echo $line | awk '{split($0,a,":"); print a[2]}' | sed 's/[[]//' | sed 's/[]]//' | sed 's/,//g' | sed 's/-//g' | awk 'BEGIN{RS=" "}{$1=$1}1'>compared_values.txt    
+
+
+            echo "--------------------- First"
+            echo $FIRST_VALUE
+            echo $INPUT_TIME_CHECK
+            echo $FINAL_VALUE
+            echo "======================"
+            echo $line
+            echo $PREVIOUS_FIRST_MINUTE
+            echo $FIRST_MINUTE
+            echo $NUMBER_COUNT
+            echo "---------------------"
 
         # Check to see if first minute <= current hour and minute <= next 10 minutes     
         elif [ $INPUT_TIME_CHECK -le $FINAL_VALUE ] && [ $INPUT_TIME_CHECK -ge $FIRST_VALUE ]
@@ -101,13 +113,29 @@ main_process() {
             then
                 echo $line | awk '{split($0,a,":"); print a[2]}' | sed 's/[[]//' | sed 's/[]]//' | sed 's/,//g' | sed 's/-//g' | awk 'BEGIN{RS=" "}{$1=$1}1'>values.txt
 
-                DIFFERENCE_COUNT=$(grep -xvFf compared_values.txt values.txt | wc -l)
+                DIFFERENCE_COUNT=$(grep -xvFf compared_values.txt values.txt | grep -v ^$ | wc -l)
+
+                ACTUAL_COUNT=$(grep -xvFf compared_values.txt values.txt | grep -v ^$)
                 NUMBER_COUNT=$(($NUMBER_COUNT + $DIFFERENCE_COUNT))
 
                 if [ $DIFFERENCE_COUNT != 0 ]
                 then
                     grep -xvFf compared_values.txt values.txt>>compared_values.txt 
                 fi
+
+                echo "--------------------- Equal"
+                echo $FIRST_VALUE
+                echo $INPUT_TIME_CHECK
+                echo $FINAL_VALUE
+                echo "======================"
+                echo $DIFFERENCE_COUNT
+                echo $ACTUAL_COUNT
+                echo "======================"
+                echo $line
+                echo $PREVIOUS_FIRST_MINUTE
+                echo $FIRST_MINUTE
+                echo $NUMBER_COUNT
+                echo "---------------------"
 
             # Check if first letter of minute is greater than previous one
             elif [ $PREVIOUS_FIRST_MINUTE -lt $FIRST_MINUTE ]
@@ -121,13 +149,29 @@ main_process() {
 
                 echo $line | awk '{split($0,a,":"); print a[2]}' | sed 's/[[]//' | sed 's/[]]//' | sed 's/,//g' | sed 's/-//g' | awk 'BEGIN{RS=" "}{$1=$1}1'>values.txt
 
-                DIFFERENCE_COUNT=$(grep -xvFf compared_values.txt values.txt | wc -l)
+                DIFFERENCE_COUNT=$(grep -xvFf compared_values.txt values.txt | grep -v ^$ | wc -l)
+
+                ACTUAL_COUNT=$(grep -xvFf compared_values.txt values.txt | grep -v ^$)
                 NUMBER_COUNT=$(($NUMBER_COUNT + $DIFFERENCE_COUNT))
 
                 if [ $DIFFERENCE_COUNT != 0 ]
                 then
                     grep -xvFf compared_values.txt values.txt>>compared_values.txt 
                 fi
+
+                echo "--------------------- Less than"
+                echo $FIRST_VALUE
+                echo $INPUT_TIME_CHECK
+                echo $FINAL_VALUE
+                echo "======================"
+                echo $DIFFERENCE_COUNT
+                echo $ACTUAL_COUNT
+                echo "======================"
+                echo $line
+                echo $PREVIOUS_FIRST_MINUTE
+                echo $FIRST_MINUTE
+                echo $NUMBER_COUNT
+                echo "---------------------"
             
             # Check if first letter of minute is less than to previous one
             elif [ $PREVIOUS_FIRST_MINUTE -gt $FIRST_MINUTE ] 
@@ -138,13 +182,29 @@ main_process() {
                 
                 echo $line | awk '{split($0,a,":"); print a[2]}' | sed 's/[[]//' | sed 's/[]]//' | sed 's/,//g' | sed 's/-//g' | awk 'BEGIN{RS=" "}{$1=$1}1'>values.txt
 
-                DIFFERENCE_COUNT=$(grep -xvFf compared_values.txt values.txt | wc -l)
+                DIFFERENCE_COUNT=$(grep -xvFf compared_values.txt values.txt | grep -v ^$ | wc -l)
+
+                ACTUAL_COUNT=$(grep -xvFf compared_values.txt values.txt | grep -v ^$)
                 NUMBER_COUNT=$(($NUMBER_COUNT + $DIFFERENCE_COUNT))
 
                 if [ $DIFFERENCE_COUNT != 0 ]
                 then
                     grep -xvFf compared_values.txt values.txt>>compared_values.txt 
                 fi
+
+                echo "--------------------- Greater than"
+                echo $FIRST_VALUE
+                echo $INPUT_TIME_CHECK
+                echo $FINAL_VALUE
+                echo "======================"
+                echo $DIFFERENCE_COUNT
+                echo $ACTUAL_COUNT
+                echo "======================"
+                echo $line
+                echo $PREVIOUS_FIRST_MINUTE
+                echo $FIRST_MINUTE
+                echo $NUMBER_COUNT
+                echo "---------------------"
 
             else
 
@@ -170,7 +230,18 @@ main_process() {
             NUMBER_COUNT=0
         
             NUMBER_COUNT=$(echo ${line} | awk '{split($0,a,":"); print a[2]}' | sed 's/[[]//' | sed 's/[]]//' | sed 's/,/ /g' | sed 's/-/ /g' | awk 'BEGIN{RS=" "}{$1=$1}1' | grep -cve '^\s*$')        
-            echo $line | awk '{split($0,a,":"); print a[2]}' | sed 's/[[]//' | sed 's/[]]//' | sed 's/,//g' | sed 's/-//g' | awk 'BEGIN{RS=" "}{$1=$1}1'>compared_values.txt    
+            echo $line | awk '{split($0,a,":"); print a[2]}' | sed 's/[[]//' | sed 's/[]]//' | sed 's/,//g' | sed 's/-//g' | awk 'BEGIN{RS=" "}{$1=$1}1'>compared_values.txt   
+
+            echo "--------------------- Last"
+            echo $FIRST_VALUE
+            echo $INPUT_TIME_CHECK
+            echo $FINAL_VALUE
+            echo "======================"
+            echo $line
+            echo $PREVIOUS_FIRST_MINUTE
+            echo $FIRST_MINUTE
+            echo $NUMBER_COUNT
+            echo "---------------------"
 
         fi
                  
