@@ -230,41 +230,73 @@ main_process() {
         # Check to see if current time is greater than maximum value
         elif [ $INPUT_TIME_CHECK -ge $FINAL_VALUE ]
         then
-            echo ""
-            echo "=============----END FROM $FIRST_VALUE TO $INPUT_TIME_CHECK / $FINAL_VALUE----============">>unique_output.txt
-            echo "$PREVIOUS_DATE_TIME$PREVIOUS_HOUR$PREVIOUS_FIRST_MINUTE: $NUMBER_COUNT">>unique_output.txt 
-            echo ""
-            echo "--------NEXT TEN MINUTES OUTPUT--------">>unique_output.txt
+            FIRST_MINUTE=("$(echo "${line}" | cut -b 11)")
+            if [ $PREVIOUS_FIRST_MINUTE -eq $FIRST_MINUTE ] 
+            then
 
-            FIRST_VALUE=$FINAL_VALUE
-            HOUR=$(echo "${FINAL_VALUE}" | cut -b 1-2)
-            MINUTE=$(echo "${FINAL_VALUE}" | cut -b 3-4)
-            SECOND=$(echo "${line}" | cut -b 13-14)
-            FINAL_VALUE=$(date -d ""${PREVIOUS_DATE_TIME}" "${HOUR}":"${MINUTE}":"${SECOND}" 10min" +'%Y%m%d%H%M%S' | cut -b 9-12)
+                echo $line | awk '{split($0,a,":"); print a[2]}' | sed 's/[[]//' | sed 's/[]]//' | sed 's/,//g' | sed 's/-//g' | awk 'BEGIN{RS=" "}{$1=$1}1'>values.txt
+
+                DIFFERENCE_COUNT=$(grep -xvFf compared_values.txt values.txt | grep -v ^$ | awk '!seen[$0]++' | wc -l)
+
+                ACTUAL_COUNT=$(grep -xvFf compared_values.txt values.txt | grep -v ^$ | awk '!seen[$0]++')
+                NUMBER_COUNT=$(($NUMBER_COUNT + $DIFFERENCE_COUNT))
+
+                if [ $DIFFERENCE_COUNT != 0 ]
+                then
+                    grep -xvFf compared_values.txt values.txt>>compared_values.txt 
+                fi  
+
+                echo "============================================================ EXCEED"
+                echo "----------------------------------------"
+                cat compared_values.txt
+                echo "----------------------------------------"
+                echo "FIRST_VALUE = $FIRST_VALUE"
+                echo "FINAL_VALUE  = $FINAL_VALUE"
+                echo "CURRENT_LINE = $line"
+                echo "PREVIOUS_MINUTE = $PREVIOUS_FIRST_MINUTE"
+                echo "FIRST_MINUTE = $FIRST_MINUTE"
+                echo "DIFFERENT_COUNT = $DIFFERENCE_COUNT"
+                echo "ACTUAL_COUNT = $ACTUAL_COUNT"
+                echo "NUMBER_COUNT = $NUMBER_COUNT"
+                echo "============================================================ EXCEED"
+                echo ""
+            else 
+                echo ""
+                echo "=============----END FROM $FIRST_VALUE TO $INPUT_TIME_CHECK / $FINAL_VALUE----============">>unique_output.txt
+                echo "$PREVIOUS_DATE_TIME$PREVIOUS_HOUR$PREVIOUS_FIRST_MINUTE: $NUMBER_COUNT">>unique_output.txt 
+                echo ""
+                echo "--------NEXT TEN MINUTES OUTPUT--------">>unique_output.txt
+
+                FIRST_VALUE=$FINAL_VALUE
+                HOUR=$(echo "${FINAL_VALUE}" | cut -b 1-2)
+                MINUTE=$(echo "${FINAL_VALUE}" | cut -b 3-4)
+                SECOND=$(echo "${line}" | cut -b 13-14)
+                FINAL_VALUE=$(date -d ""${PREVIOUS_DATE_TIME}" "${HOUR}":"${MINUTE}":"${SECOND}" 10min" +'%Y%m%d%H%M%S' | cut -b 9-12)
+                
+                PREVIOUS_DATE_TIME=$(echo "${line}" | cut -b 1-8)
+                PREVIOUS_HOUR=$(echo "${line}" | cut -b 9-10)
+                PREVIOUS_FIRST_MINUTE=$(echo "${line}" | cut -b 11)
+
+                NUMBER_COUNT=0
             
-            PREVIOUS_DATE_TIME=$(echo "${line}" | cut -b 1-8)
-            PREVIOUS_HOUR=$(echo "${line}" | cut -b 9-10)
-            PREVIOUS_FIRST_MINUTE=$(echo "${line}" | cut -b 11)
+                NUMBER_COUNT=$(echo ${line} | awk '{split($0,a,":"); print a[2]}' | sed 's/[[]//' | sed 's/[]]//' | sed 's/,/ /g' | sed 's/-/ /g' | awk 'BEGIN{RS=" "}{$1=$1}1' | grep -cve '^\s*$')        
+                echo $line | awk '{split($0,a,":"); print a[2]}' | sed 's/[[]//' | sed 's/[]]//' | sed 's/,//g' | sed 's/-//g' | awk 'BEGIN{RS=" "}{$1=$1}1'>compared_values.txt   
 
-            NUMBER_COUNT=0
-        
-            NUMBER_COUNT=$(echo ${line} | awk '{split($0,a,":"); print a[2]}' | sed 's/[[]//' | sed 's/[]]//' | sed 's/,/ /g' | sed 's/-/ /g' | awk 'BEGIN{RS=" "}{$1=$1}1' | grep -cve '^\s*$')        
-            echo $line | awk '{split($0,a,":"); print a[2]}' | sed 's/[[]//' | sed 's/[]]//' | sed 's/,//g' | sed 's/-//g' | awk 'BEGIN{RS=" "}{$1=$1}1'>compared_values.txt   
-
-            echo "============================================================ 0510 > 0509"
-            echo "----------------------------------------"
-            cat compared_values.txt
-            echo "----------------------------------------"
-            echo "FIRST_VALUE = $FIRST_VALUE"
-            echo "FINAL_VALUE  = $FINAL_VALUE"
-            echo "CURRENT_LINE = $line"
-            echo "PREVIOUS_MINUTE = $PREVIOUS_FIRST_MINUTE"
-            echo "FIRST_MINUTE = $FIRST_MINUTE"
-            echo "DIFFERENT_COUNT = $DIFFERENCE_COUNT"
-            echo "ACTUAL_COUNT = $ACTUAL_COUNT"
-            echo "NUMBER_COUNT = $NUMBER_COUNT"
-            echo "============================================================ 0510 > 0509"
-            echo ""
+                echo "============================================================ 0510 > 0509"
+                echo "----------------------------------------"
+                cat compared_values.txt
+                echo "----------------------------------------"
+                echo "FIRST_VALUE = $FIRST_VALUE"
+                echo "FINAL_VALUE  = $FINAL_VALUE"
+                echo "CURRENT_LINE = $line"
+                echo "PREVIOUS_MINUTE = $PREVIOUS_FIRST_MINUTE"
+                echo "FIRST_MINUTE = $FIRST_MINUTE"
+                echo "DIFFERENT_COUNT = $DIFFERENCE_COUNT"
+                echo "ACTUAL_COUNT = $ACTUAL_COUNT"
+                echo "NUMBER_COUNT = $NUMBER_COUNT"
+                echo "============================================================ 0510 > 0509"
+                echo ""
+            fi
 
         fi
                  
