@@ -18,6 +18,7 @@ timestamp:ads
 Where:
 
 `- timestamp is in the format YYYYMMDDhhmmss`
+  
 `- ads is a comma separated list of ad asset IDs surrounded by square brackets, or - if no ads were returned`
 
 The first part of the task is to write a script that outputs, for each ten minute slice of the day:
