@@ -1,6 +1,7 @@
 ## Script Writing
 
-Every time our system makes a call to an ad server it logs what adverts are returned (which is what the interview.log file contains).  When the adserver responds, it provides a list of asset IDs that are to be stitched into the user’s live stream:
+Every time our system makes a call to an ad server it logs what adverts are returned (which is what the interview.log file contains).  
+When the adserver responds, it provides a list of asset IDs that are to be stitched into the user’s live stream:
 
 ```
 20160420084726:-
