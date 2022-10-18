@@ -1,4 +1,4 @@
-#Script Writing
+## Script Writing
 
 Every time our system makes a call to an ad server it logs what adverts are returned (which is what the interview.log file contains).  When the adserver responds, it provides a list of asset IDs that are to be stitched into the user’s live stream:
 
@@ -22,9 +22,9 @@ Where:
 
 The first part of the task is to write a script that outputs, for each ten minute slice of the day:
 
-The count of IDs that were returned
-The count of unique IDs that were returned
-The script should support a command line parameter to select whether unique or total IDs should be given.
+* The count of IDs that were returned
+* The count of unique IDs that were returned
+* The script should support a command line parameter to select whether unique or total IDs should be given.
 
 Example output using the above log excerpt (in total mode):
 
@@ -36,6 +36,8 @@ Example output using the above log excerpt (in total mode):
   
 And in unique count mode it would give:
 
+```
 20160420084:0
 20160420085:19
 20160420090:5
+```
