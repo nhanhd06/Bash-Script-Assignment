@@ -13,7 +13,7 @@ Every time our system makes a call to an ad server it logs what adverts are retu
 
 The format of the input log is:
 
-timestamp:ads
+`timestamp:ads`
 
 Where:
 
