@@ -16,6 +16,7 @@ The format of the input log is:
 timestamp:ads
 
 Where:
+
 timestamp is in the format YYYYMMDDhhmmss
 ads is a comma separated list of ad asset IDs surrounded by square brackets, or - if no ads were returned
 
@@ -27,10 +28,12 @@ The script should support a command line parameter to select whether unique or t
 
 Example output using the above log excerpt (in total mode):
 
+```
 20160420084:0
 20160420085:26
 20160420090:5
-
+```
+  
 And in unique count mode it would give:
 
 20160420084:0
